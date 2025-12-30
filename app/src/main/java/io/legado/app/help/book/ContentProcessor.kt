@@ -225,7 +225,9 @@ class ContentProcessor private constructor(
         try {
             AppLog.put("对话识别开始 - 正则: $patternStr, 段落数: ${paragraphs.size}")
             val pattern = Pattern.compile(patternStr)
-            
+            // 获取段落缩进长度
+            val indentLength = ReadBookConfig.paragraphIndent.length
+
             paragraphs.forEachIndexed { index, paragraph ->
                 if (paragraph.isNotEmpty()) {
                     val matcher = pattern.matcher(paragraph)
@@ -233,6 +235,9 @@ class ContentProcessor private constructor(
                     while (matcher.find()) {
                         matchCount++
                         val matched = paragraph.substring(matcher.start(), matcher.end())
+
+                        // 对话范围直接使用匹配位置
+                        // 在段落文本中的位置就是在排版时的字符索引位置
                         ranges.add(
                             BookContent.DialogueRange(
                                 paragraphIndex = index,
@@ -240,7 +245,12 @@ class ContentProcessor private constructor(
                                 end = matcher.end()
                             )
                         )
-                        AppLog.put("找到对话 [段落$index, $matchCount]: $matched")
+                        // 输出段落前20个字符用于调试
+                        val paragraphPreview = if (paragraph.length > 20) "${paragraph.substring(0, 20)}..." else paragraph
+                        AppLog.put("找到对话 [段落$index, 匹配$matchCount, 位置${matcher.start()}-${matcher.end()}, 缩进长度$indentLength]")
+                        AppLog.put("  段落内容: $paragraphPreview")
+                        AppLog.put("  匹配内容: $matched")
+                        AppLog.put("  段落前3字符编码: ${paragraph.take(3).map { it.code }}")
                     }
                 }
             }

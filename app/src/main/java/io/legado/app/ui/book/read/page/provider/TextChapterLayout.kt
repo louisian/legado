@@ -202,13 +202,20 @@ class TextChapterLayout(
         if (currentParagraphIndex < 0 || ranges.isEmpty()) {
             return false
         }
-        val isDialogue = ranges.any {
-            it.paragraphIndex == currentParagraphIndex &&
-            charIndex >= it.start && charIndex < it.end 
+
+        // 查找当前段落的对话范围
+        val currentRanges = ranges.filter { it.paragraphIndex == currentParagraphIndex }
+        if (currentRanges.isEmpty()) return false
+
+        val isDialogue = currentRanges.any {
+            charIndex >= it.start && charIndex < it.end
         }
-        if (isDialogue && charIndex % 10 == 0) {  // 每10个字符记录一次，避免日志过多
-            AppLog.put("字符在对话范围内 - 段落:$currentParagraphIndex, 索引:$charIndex")
+
+        // 详细日志 - 只在开头几个字符记录
+        if (charIndex < 5) {
+            AppLog.put("检查字符 - 段落:$currentParagraphIndex, 索引:$charIndex, 是否对话:$isDialogue, 对话范围:${currentRanges.map { "[${it.start}, ${it.end})" }}")
         }
+
         return isDialogue
     }
 
@@ -605,15 +612,21 @@ class TextChapterLayout(
         val bodyIndent = paragraphIndent
         repeat(bodyIndent.length) {
             val x1 = x + indentCharWidth
+            // 检查缩进字符是否在对话范围内
+            val isDialogue = isInDialogueRange(currentParagraphCharIndex)
             textLine.addColumn(
                 TextColumn(
                     charData = ChapterProvider.indentChar,
                     start = absStartX + x,
                     end = absStartX + x1
-                )
+                ).apply {
+                    this.isDialogue = isDialogue
+                }
             )
             x = x1
             textLine.indentWidth = x
+            // 重要：增加字符索引以保持与段落文本同步
+            currentParagraphCharIndex++
         }
         textLine.indentSize = bodyIndent.length
         if (words.size > bodyIndent.length) {
