@@ -19,7 +19,8 @@ data class BookContent(
     data class DialogueRange(
         val paragraphIndex: Int,  // 段落索引
         val start: Int,            // 对话开始位置
-        val end: Int               // 对话结束位置
+        val end: Int,              // 对话结束位置
+        val colorIndex: Int = 0    // 颜色索引，用于交替显示不同颜色
     )
 
 }

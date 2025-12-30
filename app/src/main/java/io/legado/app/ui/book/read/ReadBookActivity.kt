@@ -1456,14 +1456,17 @@ class ReadBookActivity : BaseReadBookActivity(),
                 postEvent(EventBus.UP_CONFIG, arrayListOf(2))
             }
 
-            DialogueColorConfigDialog.DIALOGUE_COLOR -> {
-                ReadBookConfig.durConfig.setCurDialogueColor(color)
+            DialogueColorConfigDialog.DIALOGUE_COLOR_DAY1,
+            DialogueColorConfigDialog.DIALOGUE_COLOR_DAY2,
+            DialogueColorConfigDialog.DIALOGUE_COLOR_NIGHT1,
+            DialogueColorConfigDialog.DIALOGUE_COLOR_NIGHT2,
+            DialogueColorConfigDialog.DIALOGUE_COLOR_EINK1,
+            DialogueColorConfigDialog.DIALOGUE_COLOR_EINK2 -> {
                 supportFragmentManager.fragments.forEach { fragment ->
                     if (fragment is DialogueColorConfigDialog) {
-                        fragment.onColorSelected(color)
+                        fragment.onColorSelected(dialogId, color)
                     }
                 }
-                postEvent(EventBus.UP_CONFIG, arrayListOf(2))
             }
         }
     }

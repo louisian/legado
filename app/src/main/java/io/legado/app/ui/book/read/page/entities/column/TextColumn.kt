@@ -3,7 +3,6 @@ package io.legado.app.ui.book.read.page.entities.column
 import android.graphics.Canvas
 import android.os.Build
 import androidx.annotation.Keep
-import io.legado.app.constant.AppLog
 import io.legado.app.help.config.ReadBookConfig
 import io.legado.app.lib.theme.ThemeStore
 import io.legado.app.ui.book.read.page.ContentTextView
@@ -50,6 +49,8 @@ data class TextColumn(
             field = value
         }
 
+    var dialogueColorIndex: Int = 0  // 对话颜色索引，用于交替显示不同颜色
+
     override fun draw(view: ContentTextView, canvas: Canvas) {
         val textPaint = if (textLine.isTitle) {
             ChapterProvider.titlePaint
@@ -58,7 +59,7 @@ data class TextColumn(
         }
         val textColor = when {
             textLine.isReadAloud || isSearchResult -> ThemeStore.accentColor
-            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> ReadBookConfig.durConfig.curDialogueColor()
+            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> ReadBookConfig.durConfig.curDialogueColor(dialogueColorIndex)
             else -> ReadBookConfig.textColor
         }
         if (textPaint.color != textColor) {

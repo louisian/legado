@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -24,21 +27,153 @@
         android:id="@+id/ll_dialogue_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
 
+        <!-- 白天模式颜色 -->
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dialogue_color" />
+            android:text="@string/dialogue_color_day"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
 
-        <io.legado.app.lib.theme.view.ThemeButton
-            android:id="@+id/btn_dialogue_color"
-            android:layout_width="80dp"
-            android:layout_height="36dp"
-            android:text="@string/select_color" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_1" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_day1"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_2" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_day2"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
+        <!-- 夜间模式颜色 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialogue_color_night"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_1" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_night1"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_2" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_night2"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
+        <!-- 墨水屏模式颜色 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialogue_color_eink"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_1" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_eink1"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialogue_color_2" />
+
+            <io.legado.app.lib.theme.view.ThemeButton
+                android:id="@+id/btn_dialogue_color_eink2"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:text="@string/select_color" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -87,3 +222,6 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</ScrollView>
+

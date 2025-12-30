@@ -221,6 +221,7 @@ class ContentProcessor private constructor(
         
         try {
             val pattern = Pattern.compile(patternStr)
+            var colorIndex = 0  // 颜色索引，用于交替显示
 
             paragraphs.forEachIndexed { index, paragraph ->
                 if (paragraph.isNotEmpty()) {
@@ -230,9 +231,11 @@ class ContentProcessor private constructor(
                             BookContent.DialogueRange(
                                 paragraphIndex = index,
                                 start = matcher.start(),
-                                end = matcher.end()
+                                end = matcher.end(),
+                                colorIndex = colorIndex
                             )
                         )
+                        colorIndex++  // 每个对话使用不同的颜色索引
                     }
                 }
             }

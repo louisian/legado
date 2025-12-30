@@ -582,9 +582,12 @@ object ReadBookConfig {
         var headerMode: Int = 0,
         var footerMode: Int = 0,
         var dialogueColorEnabled: Boolean = false,//是否启用对话颜色
-        var dialogueColor: String = "#2196F3",//白天对话颜色
-        var dialogueColorNight: String = "#64B5F6",//夜间对话颜色
-        var dialogueColorEInk: String = "#000000",//EInk对话颜色
+        var dialogueColor: String = "#2196F3",//白天对话颜色1
+        var dialogueColor2: String = "#4CAF50",//白天对话颜色2
+        var dialogueColorNight: String = "#64B5F6",//夜间对话颜色1
+        var dialogueColorNight2: String = "#81C784",//夜间对话颜色2
+        var dialogueColorEInk: String = "#000000",//EInk对话颜色1
+        var dialogueColorEInk2: String = "#424242",//EInk对话颜色2
         var dialoguePattern: String = """[""\u201C\u201D''\u2018\u2019「『].*?[""\u201C\u201D''\u2018\u2019」』]"""//对话识别正则（支持全角半角引号）
     ) {
 
@@ -596,6 +599,15 @@ object ReadBookConfig {
 
         @Transient
         private var dialogueColorInt = -1
+
+        @Transient
+        private var dialogueColorIntEInk2 = -1
+
+        @Transient
+        private var dialogueColorIntNight2 = -1
+
+        @Transient
+        private var dialogueColorInt2 = -1
 
         @Transient
         private var textColorIntEInk = -1
@@ -616,6 +628,9 @@ object ReadBookConfig {
             dialogueColorIntEInk = Color.parseColor(dialogueColorEInk)
             dialogueColorIntNight = Color.parseColor(dialogueColorNight)
             dialogueColorInt = Color.parseColor(dialogueColor)
+            dialogueColorIntEInk2 = Color.parseColor(dialogueColorEInk2)
+            dialogueColorIntNight2 = Color.parseColor(dialogueColorNight2)
+            dialogueColorInt2 = Color.parseColor(dialogueColor2)
             initColorInt = true
         }
 
@@ -668,14 +683,14 @@ object ReadBookConfig {
             }
         }
 
-        fun curDialogueColor(): Int {
+        fun curDialogueColor(colorIndex: Int = 0): Int {
             if (!initColorInt) {
                 initColorInt()
             }
             return when {
-                AppConfig.isEInkMode -> dialogueColorIntEInk
-                AppConfig.isNightTheme -> dialogueColorIntNight
-                else -> dialogueColorInt
+                AppConfig.isEInkMode -> if (colorIndex % 2 == 0) dialogueColorIntEInk else dialogueColorIntEInk2
+                AppConfig.isNightTheme -> if (colorIndex % 2 == 0) dialogueColorIntNight else dialogueColorIntNight2
+                else -> if (colorIndex % 2 == 0) dialogueColorInt else dialogueColorInt2
             }
         }
 

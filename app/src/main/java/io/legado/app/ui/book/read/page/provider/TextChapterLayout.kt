@@ -209,6 +209,22 @@ class TextChapterLayout(
     }
 
     /**
+     * 获取当前字符的对话颜色索引
+     */
+    private fun getDialogueColorIndex(charIndex: Int): Int {
+        if (!ReadBookConfig.durConfig.dialogueColorEnabled) return 0
+        val ranges = bookContent.dialogueRanges
+        if (currentParagraphIndex < 0 || ranges.isEmpty()) {
+            return 0
+        }
+        val range = ranges.find {
+            it.paragraphIndex == currentParagraphIndex &&
+            charIndex >= it.start && charIndex < it.end
+        }
+        return range?.colorIndex ?: 0
+    }
+
+    /**
      * 获取拆分完的章节数据
      */
     private suspend fun getTextChapter(
@@ -601,7 +617,6 @@ class TextChapterLayout(
         val bodyIndent = paragraphIndent
         repeat(bodyIndent.length) {
             val x1 = x + indentCharWidth
-            // 检查缩进字符是否在对话范围内
             val isDialogue = isInDialogueRange(currentParagraphCharIndex)
             textLine.addColumn(
                 TextColumn(
@@ -610,11 +625,13 @@ class TextChapterLayout(
                     end = absStartX + x1
                 ).apply {
                     this.isDialogue = isDialogue
+                    if (isDialogue) {
+                        this.dialogueColorIndex = getDialogueColorIndex(currentParagraphCharIndex)
+                    }
                 }
             )
             x = x1
             textLine.indentWidth = x
-            // 重要：增加字符索引以保持与段落文本同步
             currentParagraphCharIndex++
         }
         textLine.indentSize = bodyIndent.length
@@ -759,7 +776,11 @@ class TextChapterLayout(
                     end = absStartX + xEnd,
                     charData = char
                 ).also { textColumn ->
-                    textColumn.isDialogue = isInDialogueRange(currentParagraphCharIndex)
+                    val isDialogue = isInDialogueRange(currentParagraphCharIndex)
+                    textColumn.isDialogue = isDialogue
+                    if (isDialogue) {
+                        textColumn.dialogueColorIndex = getDialogueColorIndex(currentParagraphCharIndex)
+                    }
                 }
             }
         }

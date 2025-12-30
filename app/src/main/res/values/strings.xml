@@ -603,6 +603,11 @@
     <string name="dialogue_color_config">Dialogue Color Config</string>
     <string name="enable_dialogue_color">Enable dialogue color highlight</string>
     <string name="dialogue_color">Dialogue color</string>
+    <string name="dialogue_color_day">Day Mode</string>
+    <string name="dialogue_color_night">Night Mode</string>
+    <string name="dialogue_color_eink">E-Ink Mode</string>
+    <string name="dialogue_color_1">Color 1 (Even dialogues)</string>
+    <string name="dialogue_color_2">Color 2 (Odd dialogues)</string>
     <string name="select_color">Select color</string>
     <string name="dialogue_pattern_hint">Dialogue recognition pattern (Regex)</string>
     <string name="dialogue_pattern_example">Example: 「dialogue」"dialogue" 『dialogue』</string>
