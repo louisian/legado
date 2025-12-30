@@ -57,7 +57,7 @@ data class TextColumn(
         }
         val textColor = when {
             textLine.isReadAloud || isSearchResult -> ThemeStore.accentColor
-            isDialogue && ReadBookConfig.dialogueColorEnabled -> ReadBookConfig.curDialogueColor()
+            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> ReadBookConfig.durConfig.curDialogueColor()
             else -> ReadBookConfig.textColor
         }
         if (textPaint.color != textColor) {

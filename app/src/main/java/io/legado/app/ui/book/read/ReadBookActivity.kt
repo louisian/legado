@@ -75,6 +75,7 @@ import io.legado.app.ui.book.info.BookInfoActivity
 import io.legado.app.ui.book.read.config.AutoReadDialog
 import io.legado.app.ui.book.read.config.BgTextConfigDialog.Companion.BG_COLOR
 import io.legado.app.ui.book.read.config.BgTextConfigDialog.Companion.TEXT_COLOR
+import io.legado.app.ui.book.read.config.DialogueColorConfigDialog
 import io.legado.app.ui.book.read.config.MoreConfigDialog
 import io.legado.app.ui.book.read.config.ReadAloudDialog
 import io.legado.app.ui.book.read.config.ReadStyleDialog

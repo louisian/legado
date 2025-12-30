@@ -574,6 +574,12 @@
     <string name="bg_image">背景圖片</string>
     <string name="bg_color">背景顏色</string>
     <string name="text_color">文字顏色</string>
+    <string name="dialogue_color_config">對話顏色設定</string>
+    <string name="enable_dialogue_color">啟用對話顏色標示</string>
+    <string name="dialogue_color">對話顏色</string>
+    <string name="select_color">選擇顏色</string>
+    <string name="dialogue_pattern_hint">對話識別正規表示式</string>
+    <string name="dialogue_pattern_example">範例：「對話」"對話" 『對話』</string>
     <string name="select_image">選擇圖片</string>
     <string name="group_manage">分組管理</string>
     <string name="group_select">分組選擇</string>

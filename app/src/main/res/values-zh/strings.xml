@@ -580,6 +580,12 @@
     <string name="bg_image">背景图片</string>
     <string name="bg_color">背景颜色</string>
     <string name="text_color">文字颜色</string>
+    <string name="dialogue_color_config">对话颜色配置</string>
+    <string name="enable_dialogue_color">启用对话颜色高亮</string>
+    <string name="dialogue_color">对话颜色</string>
+    <string name="select_color">选择颜色</string>
+    <string name="dialogue_pattern_hint">对话识别正则表达式</string>
+    <string name="dialogue_pattern_example">示例：「对话」"对话" 『对话』</string>
     <string name="select_image">选择图片</string>
     <string name="group_manage">分组管理</string>
     <string name="group_select">分组选择</string>

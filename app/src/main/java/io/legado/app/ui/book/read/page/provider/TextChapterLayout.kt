@@ -197,7 +197,7 @@ class TextChapterLayout(
      * 检查当前字符是否在对话范围内
      */
     private fun isInDialogueRange(charIndex: Int): Boolean {
-        if (!ReadBookConfig.dialogueColorEnabled) return false
+        if (!ReadBookConfig.durConfig.dialogueColorEnabled) return false
         val ranges = bookContent.dialogueRanges
         if (currentParagraphIndex < 0 || ranges.isEmpty()) return false
         return ranges.any { 

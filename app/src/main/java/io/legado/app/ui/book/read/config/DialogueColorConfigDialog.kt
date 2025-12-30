@@ -12,14 +12,11 @@ import io.legado.app.base.BaseDialogFragment
 import io.legado.app.constant.EventBus
 import io.legado.app.databinding.DialogDialogueColorConfigBinding
 import io.legado.app.help.config.ReadBookConfig
-import io.legado.app.lib.theme.bottomBackground
-import io.legado.app.lib.theme.getPrimaryTextColor
 import io.legado.app.model.ReadBook
 import io.legado.app.ui.book.read.ReadBookActivity
 import io.legado.app.ui.book.read.page.provider.ChapterProvider
 import io.legado.app.utils.ColorUtils
 import io.legado.app.utils.postEvent
-import io.legado.app.utils.setLayout
 import io.legado.app.utils.viewbindingdelegate.viewBinding
 
 class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_color_config) {
