@@ -58,13 +58,7 @@ data class TextColumn(
         }
         val textColor = when {
             textLine.isReadAloud || isSearchResult -> ThemeStore.accentColor
-            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> {
-                val dialogueColor = ReadBookConfig.durConfig.curDialogueColor()
-                if (charData.trim().isNotEmpty() && charData[0].code % 20 == 0) {  // 偶尔记录一次
-                    AppLog.put("应用对话颜色 - 字符:'$charData', 颜色:${String.format("#%06X", 0xFFFFFF and dialogueColor)}")
-                }
-                dialogueColor
-            }
+            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> ReadBookConfig.durConfig.curDialogueColor()
             else -> ReadBookConfig.textColor
         }
         if (textPaint.color != textColor) {

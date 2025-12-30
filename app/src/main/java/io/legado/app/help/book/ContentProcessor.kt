@@ -202,17 +202,14 @@ class ContentProcessor private constructor(
         }
         
         // 识别对话文本
-        AppLog.put("对话颜色配置 - 启用: ${ReadBookConfig.durConfig.dialogueColorEnabled}, 正则: ${ReadBookConfig.durConfig.dialoguePattern}")
         val dialogueRanges = if (ReadBookConfig.durConfig.dialogueColorEnabled) {
             findDialogueRanges(contents, ReadBookConfig.durConfig.dialoguePattern)
         } else {
-            AppLog.put("对话颜色未启用，跳过识别")
             mutableListOf()
         }
         
         return BookContent(sameTitleRemoved, contents, effectiveReplaceRules).apply {
             this.dialogueRanges.addAll(dialogueRanges)
-            AppLog.put("BookContent 创建完成 - 对话范围数: ${this.dialogueRanges.size}")
         }
     }
     
@@ -223,21 +220,12 @@ class ContentProcessor private constructor(
         val ranges = mutableListOf<BookContent.DialogueRange>()
         
         try {
-            AppLog.put("对话识别开始 - 正则: $patternStr, 段落数: ${paragraphs.size}")
             val pattern = Pattern.compile(patternStr)
-            // 获取段落缩进长度
-            val indentLength = ReadBookConfig.paragraphIndent.length
 
             paragraphs.forEachIndexed { index, paragraph ->
                 if (paragraph.isNotEmpty()) {
                     val matcher = pattern.matcher(paragraph)
-                    var matchCount = 0
                     while (matcher.find()) {
-                        matchCount++
-                        val matched = paragraph.substring(matcher.start(), matcher.end())
-
-                        // 对话范围直接使用匹配位置
-                        // 在段落文本中的位置就是在排版时的字符索引位置
                         ranges.add(
                             BookContent.DialogueRange(
                                 paragraphIndex = index,
@@ -245,16 +233,9 @@ class ContentProcessor private constructor(
                                 end = matcher.end()
                             )
                         )
-                        // 输出段落前20个字符用于调试
-                        val paragraphPreview = if (paragraph.length > 20) "${paragraph.substring(0, 20)}..." else paragraph
-                        AppLog.put("找到对话 [段落$index, 匹配$matchCount, 位置${matcher.start()}-${matcher.end()}, 缩进长度$indentLength]")
-                        AppLog.put("  段落内容: $paragraphPreview")
-                        AppLog.put("  匹配内容: $matched")
-                        AppLog.put("  段落前3字符编码: ${paragraph.take(3).map { it.code }}")
                     }
                 }
             }
-            AppLog.put("对话识别完成 - 共找到 ${ranges.size} 处对话")
         } catch (e: Exception) {
             AppLog.put("对话识别正则错误: $patternStr", e)
         }

@@ -55,7 +55,6 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
 
     private fun initView() = binding.run {
         val config = ReadBookConfig.durConfig
-        AppLog.put("对话颜色对话框初始化 - 启用:${config.dialogueColorEnabled}, 颜色:${config.curDialogueColor()}, 正则:${config.dialoguePattern}")
         swEnableDialogueColor.isChecked = config.dialogueColorEnabled
         etDialoguePattern.setText(config.dialoguePattern)
         updateDialogueColorButton()
@@ -118,14 +117,7 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
     }
 
     private fun applyConfig() {
-        AppLog.put("应用对话颜色配置 - 启用:${ReadBookConfig.durConfig.dialogueColorEnabled}, 颜色:${ReadBookConfig.durConfig.curDialogueColor()}")
-        // 清除所有章节缓存，因为对话识别范围可能改变
         ReadBook.clearTextChapter()
-        AppLog.put("已清除章节缓存")
-        // 发送配置更新事件并重新加载内容
-        // 2: upStyle - 更新文字样式（包括颜色）
-        // 5: loadContent - 重新加载内容
         postEvent(EventBus.UP_CONFIG, arrayListOf(2, 5))
-        AppLog.put("已发送 UP_CONFIG 事件: [2, 5]")
     }
 }

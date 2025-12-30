@@ -202,21 +202,10 @@ class TextChapterLayout(
         if (currentParagraphIndex < 0 || ranges.isEmpty()) {
             return false
         }
-
-        // 查找当前段落的对话范围
-        val currentRanges = ranges.filter { it.paragraphIndex == currentParagraphIndex }
-        if (currentRanges.isEmpty()) return false
-
-        val isDialogue = currentRanges.any {
+        return ranges.any {
+            it.paragraphIndex == currentParagraphIndex &&
             charIndex >= it.start && charIndex < it.end
         }
-
-        // 详细日志 - 只在开头几个字符记录
-        if (charIndex < 5) {
-            AppLog.put("检查字符 - 段落:$currentParagraphIndex, 索引:$charIndex, 是否对话:$isDialogue, 对话范围:${currentRanges.map { "[${it.start}, ${it.end})" }}")
-        }
-
-        return isDialogue
     }
 
     /**
@@ -770,12 +759,7 @@ class TextChapterLayout(
                     end = absStartX + xEnd,
                     charData = char
                 ).also { textColumn ->
-                    // 标记是否为对话
-                    val isDialogue = isInDialogueRange(currentParagraphCharIndex)
-                    textColumn.isDialogue = isDialogue
-                    if (isDialogue && currentParagraphCharIndex % 10 == 0) {  // 偶尔记录
-                        AppLog.put("设置对话标记 - 字符:'$char', 段落:$currentParagraphIndex, 索引:$currentParagraphCharIndex")
-                    }
+                    textColumn.isDialogue = isInDialogueRange(currentParagraphCharIndex)
                 }
             }
         }
