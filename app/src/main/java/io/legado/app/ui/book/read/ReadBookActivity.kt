@@ -1462,8 +1462,12 @@ class ReadBookActivity : BaseReadBookActivity(),
             DialogueColorConfigDialog.DIALOGUE_COLOR_NIGHT2,
             DialogueColorConfigDialog.DIALOGUE_COLOR_EINK1,
             DialogueColorConfigDialog.DIALOGUE_COLOR_EINK2 -> {
+                // DialogueColorConfigDialog 是 ReadStyleDialog 的子 Fragment
+                // 需要通过 ReadStyleDialog 转发
                 supportFragmentManager.fragments.forEach { fragment ->
-                    if (fragment is DialogueColorConfigDialog) {
+                    if (fragment is ReadStyleDialog) {
+                        fragment.onColorSelected(dialogId, color)
+                    } else if (fragment is DialogueColorConfigDialog) {
                         fragment.onColorSelected(dialogId, color)
                     }
                 }

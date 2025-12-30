@@ -683,6 +683,46 @@ object ReadBookConfig {
             }
         }
 
+        fun setDialogueColor1(color: Int, mode: Int = 0) {
+            // 只保存RGB部分，去掉alpha通道，格式为 #RRGGBB
+            val colorStr = "#${Integer.toHexString(color and 0xFFFFFF).padStart(6, '0').uppercase()}"
+            when (mode) {
+                0 -> { // 白天模式
+                    dialogueColor = colorStr
+                    dialogueColorInt = color
+                }
+                1 -> { // 夜间模式
+                    dialogueColorNight = colorStr
+                    dialogueColorIntNight = color
+                }
+                2 -> { // 墨水屏模式
+                    dialogueColorEInk = colorStr
+                    dialogueColorIntEInk = color
+                }
+            }
+            initColorInt = true
+        }
+
+        fun setDialogueColor2(color: Int, mode: Int = 0) {
+            // 只保存RGB部分，去掉alpha通道，格式为 #RRGGBB
+            val colorStr = "#${Integer.toHexString(color and 0xFFFFFF).padStart(6, '0').uppercase()}"
+            when (mode) {
+                0 -> { // 白天模式
+                    dialogueColor2 = colorStr
+                    dialogueColorInt2 = color
+                }
+                1 -> { // 夜间模式
+                    dialogueColorNight2 = colorStr
+                    dialogueColorIntNight2 = color
+                }
+                2 -> { // 墨水屏模式
+                    dialogueColorEInk2 = colorStr
+                    dialogueColorIntEInk2 = color
+                }
+            }
+            initColorInt = true
+        }
+
         fun curDialogueColor(colorIndex: Int = 0): Int {
             if (!initColorInt) {
                 initColorInt()

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.get
 import com.github.liuyueyi.quick.transfer.constants.TransType
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import io.legado.app.R
 import io.legado.app.base.BaseDialogFragment
 import io.legado.app.base.adapter.ItemViewHolder
@@ -34,7 +35,8 @@ import io.legado.app.utils.viewbindingdelegate.viewBinding
 import splitties.views.onLongClick
 
 class ReadStyleDialog : BaseDialogFragment(R.layout.dialog_read_book_style),
-    FontSelectDialog.CallBack {
+    FontSelectDialog.CallBack,
+    ColorPickerDialogListener {
 
     private val binding by viewBinding(DialogReadBookStyleBinding::bind)
     private val callBack get() = activity as? ReadBookActivity
@@ -253,5 +255,18 @@ class ReadStyleDialog : BaseDialogFragment(R.layout.dialog_read_book_style),
             }
         }
 
+    }
+
+    override fun onColorSelected(dialogId: Int, color: Int) {
+        // 转发给子 Fragment
+        childFragmentManager.fragments.forEach { fragment ->
+            if (fragment is DialogueColorConfigDialog) {
+                fragment.onColorSelected(dialogId, color)
+            }
+        }
+    }
+
+    override fun onDialogDismissed(dialogId: Int) {
+        // 不需要处理
     }
 }

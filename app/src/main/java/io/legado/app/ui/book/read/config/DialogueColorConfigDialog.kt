@@ -177,12 +177,12 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
     fun onColorSelected(dialogId: Int, color: Int) {
         val config = ReadBookConfig.durConfig
         when (dialogId) {
-            DIALOGUE_COLOR_DAY1 -> config.dialogueColor = "#${Integer.toHexString(color).substring(2)}"
-            DIALOGUE_COLOR_DAY2 -> config.dialogueColor2 = "#${Integer.toHexString(color).substring(2)}"
-            DIALOGUE_COLOR_NIGHT1 -> config.dialogueColorNight = "#${Integer.toHexString(color).substring(2)}"
-            DIALOGUE_COLOR_NIGHT2 -> config.dialogueColorNight2 = "#${Integer.toHexString(color).substring(2)}"
-            DIALOGUE_COLOR_EINK1 -> config.dialogueColorEInk = "#${Integer.toHexString(color).substring(2)}"
-            DIALOGUE_COLOR_EINK2 -> config.dialogueColorEInk2 = "#${Integer.toHexString(color).substring(2)}"
+            DIALOGUE_COLOR_DAY1 -> config.setDialogueColor1(color, 0)
+            DIALOGUE_COLOR_DAY2 -> config.setDialogueColor2(color, 0)
+            DIALOGUE_COLOR_NIGHT1 -> config.setDialogueColor1(color, 1)
+            DIALOGUE_COLOR_NIGHT2 -> config.setDialogueColor2(color, 1)
+            DIALOGUE_COLOR_EINK1 -> config.setDialogueColor1(color, 2)
+            DIALOGUE_COLOR_EINK2 -> config.setDialogueColor2(color, 2)
         }
         updateAllColorButtons()
         applyConfig()
