@@ -199,11 +199,17 @@ class TextChapterLayout(
     private fun isInDialogueRange(charIndex: Int): Boolean {
         if (!ReadBookConfig.durConfig.dialogueColorEnabled) return false
         val ranges = bookContent.dialogueRanges
-        if (currentParagraphIndex < 0 || ranges.isEmpty()) return false
-        return ranges.any { 
-            it.paragraphIndex == currentParagraphIndex && 
+        if (currentParagraphIndex < 0 || ranges.isEmpty()) {
+            return false
+        }
+        val isDialogue = ranges.any {
+            it.paragraphIndex == currentParagraphIndex &&
             charIndex >= it.start && charIndex < it.end 
         }
+        if (isDialogue && charIndex % 10 == 0) {  // 每10个字符记录一次，避免日志过多
+            AppLog.put("字符在对话范围内 - 段落:$currentParagraphIndex, 索引:$charIndex")
+        }
+        return isDialogue
     }
 
     /**
@@ -752,7 +758,11 @@ class TextChapterLayout(
                     charData = char
                 ).also { textColumn ->
                     // 标记是否为对话
-                    textColumn.isDialogue = isInDialogueRange(currentParagraphCharIndex)
+                    val isDialogue = isInDialogueRange(currentParagraphCharIndex)
+                    textColumn.isDialogue = isDialogue
+                    if (isDialogue && currentParagraphCharIndex % 10 == 0) {  // 偶尔记录
+                        AppLog.put("设置对话标记 - 字符:'$char', 段落:$currentParagraphIndex, 索引:$currentParagraphCharIndex")
+                    }
                 }
             }
         }

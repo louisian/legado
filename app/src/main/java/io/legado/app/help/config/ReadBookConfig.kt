@@ -585,7 +585,7 @@ object ReadBookConfig {
         var dialogueColor: String = "#2196F3",//白天对话颜色
         var dialogueColorNight: String = "#64B5F6",//夜间对话颜色
         var dialogueColorEInk: String = "#000000",//EInk对话颜色
-        var dialoguePattern: String = "[「『\"\"''].*?[」』\"\"'']"//对话识别正则（非贪婪模式）
+        var dialoguePattern: String = """[""\u201C\u201D''\u2018\u2019「『].*?[""\u201C\u201D''\u2018\u2019」』]"""//对话识别正则（支持全角半角引号）
     ) {
 
         @Transient

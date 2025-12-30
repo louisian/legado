@@ -9,12 +9,12 @@ import android.view.WindowManager
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import io.legado.app.R
 import io.legado.app.base.BaseDialogFragment
+import io.legado.app.constant.AppLog
 import io.legado.app.constant.EventBus
 import io.legado.app.databinding.DialogDialogueColorConfigBinding
 import io.legado.app.help.config.ReadBookConfig
 import io.legado.app.model.ReadBook
 import io.legado.app.ui.book.read.ReadBookActivity
-import io.legado.app.ui.book.read.page.provider.ChapterProvider
 import io.legado.app.utils.ColorUtils
 import io.legado.app.utils.postEvent
 import io.legado.app.utils.viewbindingdelegate.viewBinding
@@ -29,22 +29,20 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.run {
-            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            setBackgroundDrawableResource(R.color.background)
-            decorView.setPadding(0, 0, 0, 0)
-            val attr = attributes
+        dialog?.window?.let {
+            it.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            it.setBackgroundDrawableResource(R.color.background)
+            it.decorView.setPadding(0, 0, 0, 0)
+            val attr = it.attributes
             attr.dimAmount = 0.0f
             attr.gravity = Gravity.BOTTOM
-            attributes = attr
-            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.attributes = attr
+            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? ReadBookActivity)?.let {
-            it.bottomDialog++
-        }
+        (activity as? ReadBookActivity)?.bottomDialog++
         initView()
         initEvent()
     }
@@ -52,13 +50,12 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         ReadBookConfig.save()
-        (activity as? ReadBookActivity)?.let {
-            it.bottomDialog--
-        }
+        (activity as? ReadBookActivity)?.bottomDialog--
     }
 
     private fun initView() = binding.run {
         val config = ReadBookConfig.durConfig
+        AppLog.put("对话颜色对话框初始化 - 启用:${config.dialogueColorEnabled}, 颜色:${config.curDialogueColor()}, 正则:${config.dialoguePattern}")
         swEnableDialogueColor.isChecked = config.dialogueColorEnabled
         etDialoguePattern.setText(config.dialoguePattern)
         updateDialogueColorButton()
@@ -121,8 +118,14 @@ class DialogueColorConfigDialog : BaseDialogFragment(R.layout.dialog_dialogue_co
     }
 
     private fun applyConfig() {
-        postEvent(EventBus.UP_CONFIG, true)
-        ChapterProvider.upLayout()
-        ReadBook.loadContent(resetPageOffset = false)
+        AppLog.put("应用对话颜色配置 - 启用:${ReadBookConfig.durConfig.dialogueColorEnabled}, 颜色:${ReadBookConfig.durConfig.curDialogueColor()}")
+        // 清除所有章节缓存，因为对话识别范围可能改变
+        ReadBook.clearTextChapter()
+        AppLog.put("已清除章节缓存")
+        // 发送配置更新事件并重新加载内容
+        // 2: upStyle - 更新文字样式（包括颜色）
+        // 5: loadContent - 重新加载内容
+        postEvent(EventBus.UP_CONFIG, arrayListOf(2, 5))
+        AppLog.put("已发送 UP_CONFIG 事件: [2, 5]")
     }
 }

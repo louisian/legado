@@ -3,6 +3,7 @@ package io.legado.app.ui.book.read.page.entities.column
 import android.graphics.Canvas
 import android.os.Build
 import androidx.annotation.Keep
+import io.legado.app.constant.AppLog
 import io.legado.app.help.config.ReadBookConfig
 import io.legado.app.lib.theme.ThemeStore
 import io.legado.app.ui.book.read.page.ContentTextView
@@ -57,7 +58,13 @@ data class TextColumn(
         }
         val textColor = when {
             textLine.isReadAloud || isSearchResult -> ThemeStore.accentColor
-            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> ReadBookConfig.durConfig.curDialogueColor()
+            isDialogue && ReadBookConfig.durConfig.dialogueColorEnabled -> {
+                val dialogueColor = ReadBookConfig.durConfig.curDialogueColor()
+                if (charData.trim().isNotEmpty() && charData[0].code % 20 == 0) {  // 偶尔记录一次
+                    AppLog.put("应用对话颜色 - 字符:'$charData', 颜色:${String.format("#%06X", 0xFFFFFF and dialogueColor)}")
+                }
+                dialogueColor
+            }
             else -> ReadBookConfig.textColor
         }
         if (textPaint.color != textColor) {
