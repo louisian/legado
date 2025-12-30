@@ -88,6 +88,10 @@ class TextChapterLayout(
     private var durY = 0f
     private var absStartX = paddingLeft
     private var floatArray = FloatArray(128)
+    
+    // 对话范围相关
+    private var currentParagraphIndex = -1
+    private var currentParagraphCharIndex = 0
 
     private var isCompleted = false
     private val job: Coroutine<*>
@@ -188,6 +192,19 @@ class TextChapterLayout(
             listener = null
         }
     }
+    
+    /**
+     * 检查当前字符是否在对话范围内
+     */
+    private fun isInDialogueRange(charIndex: Int): Boolean {
+        if (!ReadBookConfig.dialogueColorEnabled) return false
+        val ranges = bookContent.dialogueRanges
+        if (currentParagraphIndex < 0 || ranges.isEmpty()) return false
+        return ranges.any { 
+            it.paragraphIndex == currentParagraphIndex && 
+            charIndex >= it.start && charIndex < it.end 
+        }
+    }
 
     /**
      * 获取拆分完的章节数据
@@ -230,7 +247,9 @@ class TextChapterLayout(
 
         val sb = StringBuffer()
         var isSetTypedImage = false
-        contents.forEach { content ->
+        contents.forEachIndexed { index, content ->
+            currentParagraphIndex = index
+            currentParagraphCharIndex = 0
             currentCoroutineContext().ensureActive()
             if (isTextImageStyle) {
                 //图片样式为文字嵌入类型
@@ -731,10 +750,14 @@ class TextChapterLayout(
                     start = absStartX + xStart,
                     end = absStartX + xEnd,
                     charData = char
-                )
+                ).also { textColumn ->
+                    // 标记是否为对话
+                    textColumn.isDialogue = isInDialogueRange(currentParagraphCharIndex)
+                }
             }
         }
         textLine.addColumn(column)
+        currentParagraphCharIndex++
     }
 
     /**

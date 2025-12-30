@@ -580,8 +580,22 @@ object ReadBookConfig {
         var tipColor: Int = 0,
         var tipDividerColor: Int = -1,
         var headerMode: Int = 0,
-        var footerMode: Int = 0
+        var footerMode: Int = 0,
+        var dialogueColorEnabled: Boolean = false,//是否启用对话颜色
+        var dialogueColor: String = "#2196F3",//白天对话颜色
+        var dialogueColorNight: String = "#64B5F6",//夜间对话颜色
+        var dialogueColorEInk: String = "#000000",//EInk对话颜色
+        var dialoguePattern: String = "[「『""''].*?[」』""'']"//对话识别正则（非贪婪模式）
     ) {
+
+        @Transient
+        private var dialogueColorIntEInk = -1
+
+        @Transient
+        private var dialogueColorIntNight = -1
+
+        @Transient
+        private var dialogueColorInt = -1
 
         @Transient
         private var textColorIntEInk = -1
@@ -599,6 +613,9 @@ object ReadBookConfig {
             textColorIntEInk = Color.parseColor(textColorEInk)
             textColorIntNight = Color.parseColor(textColorNight)
             textColorInt = Color.parseColor(textColor)
+            dialogueColorIntEInk = Color.parseColor(dialogueColorEInk)
+            dialogueColorIntNight = Color.parseColor(dialogueColorNight)
+            dialogueColorInt = Color.parseColor(dialogueColor)
             initColorInt = true
         }
 
@@ -629,6 +646,36 @@ object ReadBookConfig {
                 AppConfig.isEInkMode -> textColorIntEInk
                 AppConfig.isNightTheme -> textColorIntNight
                 else -> textColorInt
+            }
+        }
+
+        fun setCurDialogueColor(color: Int) {
+            when {
+                AppConfig.isEInkMode -> {
+                    dialogueColorEInk = "#${color.hexString}"
+                    dialogueColorIntEInk = color
+                }
+
+                AppConfig.isNightTheme -> {
+                    dialogueColorNight = "#${color.hexString}"
+                    dialogueColorIntNight = color
+                }
+
+                else -> {
+                    dialogueColor = "#${color.hexString}"
+                    dialogueColorInt = color
+                }
+            }
+        }
+
+        fun curDialogueColor(): Int {
+            if (!initColorInt) {
+                initColorInt()
+            }
+            return when {
+                AppConfig.isEInkMode -> dialogueColorIntEInk
+                AppConfig.isNightTheme -> dialogueColorIntNight
+                else -> dialogueColorInt
             }
         }
 

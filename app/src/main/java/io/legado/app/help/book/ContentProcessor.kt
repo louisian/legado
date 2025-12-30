@@ -200,7 +200,45 @@ class ContentProcessor private constructor(
                 }
             }
         }
-        return BookContent(sameTitleRemoved, contents, effectiveReplaceRules)
+        
+        // 识别对话文本
+        val dialogueRanges = if (ReadBookConfig.durConfig.dialogueColorEnabled) {
+            findDialogueRanges(contents, ReadBookConfig.durConfig.dialoguePattern)
+        } else {
+            mutableListOf()
+        }
+        
+        return BookContent(sameTitleRemoved, contents, effectiveReplaceRules).apply {
+            this.dialogueRanges.addAll(dialogueRanges)
+        }
+    }
+    
+    private fun findDialogueRanges(
+        paragraphs: List<String>,
+        patternStr: String
+    ): MutableList<BookContent.DialogueRange> {
+        val ranges = mutableListOf<BookContent.DialogueRange>()
+        
+        try {
+            val pattern = Pattern.compile(patternStr)
+            
+            paragraphs.forEachIndexed { index, paragraph ->
+                val matcher = pattern.matcher(paragraph)
+                while (matcher.find()) {
+                    ranges.add(
+                        BookContent.DialogueRange(
+                            paragraphIndex = index,
+                            start = matcher.start(),
+                            end = matcher.end()
+                        )
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            AppLog.put("对话识别正则错误: $patternStr", e)
+        }
+        
+        return ranges
     }
 
 }

@@ -41,6 +41,13 @@ data class TextColumn(
             }
             field = value
         }
+    var isDialogue: Boolean = false
+        set(value) {
+            if (field != value) {
+                textLine.invalidate()
+            }
+            field = value
+        }
 
     override fun draw(view: ContentTextView, canvas: Canvas) {
         val textPaint = if (textLine.isTitle) {
@@ -48,10 +55,10 @@ data class TextColumn(
         } else {
             ChapterProvider.contentPaint
         }
-        val textColor = if (textLine.isReadAloud || isSearchResult) {
-            ThemeStore.accentColor
-        } else {
-            ReadBookConfig.textColor
+        val textColor = when {
+            textLine.isReadAloud || isSearchResult -> ThemeStore.accentColor
+            isDialogue && ReadBookConfig.dialogueColorEnabled -> ReadBookConfig.curDialogueColor()
+            else -> ReadBookConfig.textColor
         }
         if (textPaint.color != textColor) {
             textPaint.color = textColor

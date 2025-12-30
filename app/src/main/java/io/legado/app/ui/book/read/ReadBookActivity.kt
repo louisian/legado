@@ -1454,6 +1454,16 @@ class ReadBookActivity : BaseReadBookActivity(),
                 postEvent(EventBus.TIP_COLOR, "")
                 postEvent(EventBus.UP_CONFIG, arrayListOf(2))
             }
+
+            DialogueColorConfigDialog.DIALOGUE_COLOR -> {
+                ReadBookConfig.durConfig.setCurDialogueColor(color)
+                supportFragmentManager.fragments.forEach { fragment ->
+                    if (fragment is DialogueColorConfigDialog) {
+                        fragment.onColorSelected(color)
+                    }
+                }
+                postEvent(EventBus.UP_CONFIG, arrayListOf(2))
+            }
         }
     }
 
